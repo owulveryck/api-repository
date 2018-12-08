@@ -1,0 +1,30 @@
+Powering a frontend API of a warehouse with Go
+With GCP
+15:04 2 Jan 2006
+
+Olivier Wulveryck
+Consultant Ops, Octo Technology
+owulveryck@octo.com
+https://blog.owulveryck.info
+@owulveryck
+
+* The Object we are going to save
+
+.code interface.go /START_IDER OMIT/,/END_IDER OMIT/
+
+.link https://godoc.org/encoding/json#Unmarshaler Doc for the Unmarshaler interface
+.link https://godoc.org/encoding/json#Marshaler Doc for the Marshaler interface
+
+* Let's define a product
+
+.link https://support.google.com/merchants/answer/7052112?hl=en
+
+.image assets/google_basic_product.png _ 800
+
+* And its implementation
+
+.code product.go /START_PRODUCT OMIT/,/END_PRODUCT OMIT/
+
+* Test it
+
+.code product_test.go /START_TEST_PRODUCT OMIT/,/END_TEST_PRODUCT OMIT/
