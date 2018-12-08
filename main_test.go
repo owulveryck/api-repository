@@ -10,20 +10,19 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 	_ "github.com/owulveryck/api-repository/repository/fs"
+	"github.com/owulveryck/api-repository/worker"
 )
 
 var testURL string
 
 func TestMain(m *testing.M) {
 	config = configuration{
-		ProjectID:  "dummy",
-		BucketName: "dummy",
 		MaxWorkers: 10,
 		MaxQueue:   100,
 		MaxLength:  15240,
 	}
 
-	jobQueue = make(chan Job, config.MaxQueue)
+	jobQueue = make(chan worker.Job, config.MaxQueue)
 	dir, err := ioutil.TempDir("", "example")
 	if err != nil {
 		log.Fatal(err)
@@ -40,7 +39,6 @@ func TestMain(m *testing.M) {
 	router.POST("/products/attributes", HandleAttributeCreate)
 	router.POST("/products/models", ProductCreate)
 	router.GET("/products/model_details/:code", HandleProductGet)
-	router.GET("/jobs/:id", session.HTTPGet)
 	ts := httptest.NewServer(router)
 	defer ts.Close()
 	testURL = ts.URL
