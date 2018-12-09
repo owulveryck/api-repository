@@ -1,6 +1,6 @@
-Powering a frontend API of a warehouse with Go
-With GCP
-15:04 2 Jan 2006
+As an Ops, what do I expect from an API
+Let's code one in Go
+15:04 7 Dec 2018
 
 Olivier Wulveryck
 Consultant Ops, Octo Technology
@@ -10,7 +10,7 @@ https://blog.owulveryck.info
 
 * The Object we are going to save
 
-.code interface.go /START_IDER OMIT/,/END_IDER OMIT/
+.code ../object/interface.go /START_IDER OMIT/,/END_IDER OMIT/
 
 .link https://godoc.org/encoding/json#Unmarshaler Doc for the Unmarshaler interface
 .link https://godoc.org/encoding/json#Marshaler Doc for the Marshaler interface
@@ -23,8 +23,52 @@ https://blog.owulveryck.info
 
 * And its implementation
 
-.code product.go /START_PRODUCT OMIT/,/END_PRODUCT OMIT/
+.code ../product.go /START_PRODUCT OMIT/,/END_PRODUCT OMIT/
 
-* Test it
+* SLOs and SLIs
 
-.code product_test.go /START_TEST_PRODUCT OMIT/,/END_TEST_PRODUCT OMIT/
+
+.link https://landing.google.com/sre/sre-book/chapters/service-level-objectives/ From the Chapter 4 of the SRE BOOK (Service Level Objectives)
+
+- SLI 
+
+An SLI is a service level indicator — a carefully defined quantitative measure of some aspect of the level of service that is provided.
+
+- SLO 
+
+An SLO is a service level objective: a target value or range of values for a service level that is measured by an SLI. A natural structure for SLOs is thus SLI ≤ target, or lower bound ≤ SLI ≤ upper bound.
+
+* From the SRE workbook...
+
+* Availability
+
+- SLI 
+
+The proportion of successful requests, as measured from the load balancer metrics. Any HTTP status other than 500–599 is considered successful.
+
+  count of "api" http_requests which do not have a 5XX status code
+  divided by
+  count of all "api" http_requests
+
+- Objective
+
+97% success
+
+* Latency
+
+- SLI
+
+The proportion of sufficiently fast requests, as measured from the load balancer metrics. “Sufficiently fast” is defined as < 400 ms, or < 850 ms.
+
+  count of "api" http_requests with a duration less than or equal to "0.4" seconds
+  divided by
+  count of all "api" http_requests
+
+  count of "api" http_requests with a duration less than or equal to "0.85" seconds
+  divided by
+  count of all "api" http_requests
+
+- SLO
+
+90% of requests < 400 ms
+99% of requests < 850 ms
