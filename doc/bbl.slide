@@ -8,6 +8,16 @@ owulveryck@octo.com
 https://blog.owulveryck.info
 @owulveryck
 
+* Foreword
+
+- Pure Go without magic (= no framework)
+
+- Dependencies: 
+
+.link  https://github.com/google/uuid github.com/google/uuid 
+.link  https://github.com/kelseyhightower/envconfig github.com/kelseyhightower/envconfig
+.link  https://github.com/stretchr/testify/assert github.com/stretchr/testify/assert
+
 * Use case
 
 * Abstraction of the object
@@ -30,7 +40,7 @@ As an example, let's define and store a product:
 * The product implementation
 
 `Product` fulfils the `IDer` interface:
-.code ../product.go /START_PRODUCT OMIT/,/END_PRODUCT OMIT/
+.code ../business/product.go /START_PRODUCT OMIT/,/END_PRODUCT OMIT/
 
 * Repository
 

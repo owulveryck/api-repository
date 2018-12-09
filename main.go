@@ -5,9 +5,13 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/julienschmidt/httprouter"
 	"github.com/kelseyhightower/envconfig"
-	_ "github.com/owulveryck/api-repository/repository/gcs"
+	"github.com/owulveryck/api-repository/business"
+	"github.com/owulveryck/api-repository/handler"
+
+	//_ "github.com/owulveryck/api-repository/repository/gcs"
+	_ "github.com/owulveryck/api-repository/repository/fs"
+	_ "github.com/owulveryck/api-repository/session/memory"
 	"github.com/owulveryck/api-repository/worker"
 )
 
@@ -21,7 +25,7 @@ type configuration struct {
 var (
 
 	// jobQueue is A buffered channel that we can send work requests on.
-	jobQueue chan worker.Job
+	jobQueue chan<- worker.Job
 	config   configuration
 )
 
@@ -37,24 +41,19 @@ func main() {
 	}
 
 	jobQueue = worker.NewJobQueue(config.MaxQueue)
-	// Create the storage object
-	// Create the dispatcher and launche the worker pools
 	dispatcher := worker.NewDispatcher(config.MaxWorkers)
 	dispatcher.Run()
 
-	router := httprouter.New()
-
-	// Respond to App Engine and Compute Engine health checks.
-	// Indicate the server is healthy.
-	router.GET("/_ah/health", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	http.HandleFunc("/_ah/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("ok"))
 	})
-	router.POST("/products/attributes", HandleAttributeCreate)
-	router.POST("/products/models", ProductCreate)
-	//  router.POST("/products", Hello)
-	router.GET("/products/model_details/:code", HandleProductGet)
-	router.GET("/jobs/:id", nil)
+
+	http.Handle("/products", handler.SimplePost{
+		Element:  &business.Product{},
+		Path:     productPath,
+		JobQueue: jobQueue,
+	})
 
 	log.Printf("Listening on port %v", config.Port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", config.Port), router))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", config.Port), nil))
 }

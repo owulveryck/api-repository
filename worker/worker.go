@@ -13,8 +13,9 @@ import (
 var jobQueue chan Job
 
 // NewJobQueue ...
-func NewJobQueue(queueLength int) chan Job {
-	return make(chan Job, queueLength)
+func NewJobQueue(queueLength int) chan<- Job {
+	jobQueue = make(chan Job, queueLength)
+	return jobQueue
 }
 
 // Job represents the job to be run
@@ -50,13 +51,6 @@ func (w worker) Start() {
 
 			select {
 			case job := <-w.JobChannel:
-				/*
-					err := w.saver.Save(context.TODO(), job.Payload, job.path)
-						job.ret <- returnCode{
-							Err:  err,
-							Code: job.Payload.ID(),
-						}
-				*/
 				session.Upsert(context.TODO(), job.TransactionID, session.Element{
 					ID:     job.Payload.ID(),
 					Status: http.StatusCreated,

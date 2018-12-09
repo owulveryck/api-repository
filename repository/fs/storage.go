@@ -5,6 +5,7 @@ import (
 	// ...
 	"context"       // OMIT
 	"encoding/json" // OMIT
+	"log"
 	"os"            // OMIT
 	"path/filepath" // OMIT
 
@@ -16,7 +17,7 @@ import (
 // END_IMPORT OMIT
 
 type configuration struct {
-	Path string `envconfig:"PATH" required:"true" default:"/tmp"`
+	Path string `envconfig:"SAVEPATH" required:"true" default:"/tmp"`
 }
 
 var config configuration
@@ -42,6 +43,7 @@ type fsStorage struct {
 func (s *fsStorage) Save(ctx context.Context, object object.IDer, path string) error {
 	//time.Sleep(200 * time.Millisecond) OMIT
 	fpath := filepath.Join(s.Path, path, object.ID())
+	log.Println(fpath)
 	err := os.MkdirAll(filepath.Dir(fpath), 0755)
 	if err != nil {
 		return err

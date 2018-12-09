@@ -21,8 +21,14 @@ type dummyStorage struct {
 }
 
 func (s *dummyStorage) Save(ctx context.Context, object object.IDer, path string) error {
-	time.Sleep(s.wait)
-	return nil
+	for {
+		select {
+		case <-time.After(s.wait):
+			return nil
+		case <-ctx.Done():
+			return ctx.Err()
+		}
+	}
 }
 
 // END_OBJECT OMIT
