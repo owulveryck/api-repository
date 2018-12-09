@@ -5,7 +5,6 @@ import (
 	// ...
 	"context"       // OMIT
 	"encoding/json" // OMIT
-	"log"
 	"os"            // OMIT
 	"path/filepath" // OMIT
 
@@ -43,7 +42,6 @@ type fsStorage struct {
 func (s *fsStorage) Save(ctx context.Context, object object.IDer, path string) error {
 	//time.Sleep(200 * time.Millisecond) OMIT
 	fpath := filepath.Join(s.Path, path, object.ID())
-	log.Println(fpath)
 	err := os.MkdirAll(filepath.Dir(fpath), 0755)
 	if err != nil {
 		return err

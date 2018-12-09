@@ -2,6 +2,7 @@ package business
 
 import (
 	"encoding/json"
+	"errors"
 	"net/url"
 )
 
@@ -36,7 +37,10 @@ func (p *Product) UnmarshalJSON(b []byte) error {
 	var aux alias                  // OMIT
 	err := json.Unmarshal(b, &aux) // OMIT
 	*p = (Product)(aux)            // OMIT
-	return err                     // OMIT
+	if p.SKU == "" {
+		return errors.New("id is null or absent")
+	}
+	return err // OMIT
 }
 
 // END_PRODUCT OMIT
