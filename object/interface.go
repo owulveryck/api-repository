@@ -31,6 +31,7 @@ type Iterator interface {
 	Element() IDer
 	// Reset returns the iterator to its start position.
 	Reset()
+	Len() int
 	json.Marshaler
 	json.Unmarshaler
 }
