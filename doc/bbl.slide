@@ -25,7 +25,7 @@ As an example, let's define and store a product:
 
 .link https://support.google.com/merchants/answer/7052112?hl=en
 
-.image assets/google_basic_product.png _ 800
+.html assets/quickreference.html
 
 * The product implementation
 
@@ -41,15 +41,15 @@ TODO
 The interface: 
 .code ../repository/saver.go /START_SAVER OMIT/,/END_SAVER OMIT/
 
-* Repository on Filesystem (for testing purpose)
-
-.code ../repository/fs/storage.go /START_OBJECT OMIT/,/END_OBJECT OMIT/
-
 * Repository on Google Cloud Storage
 
 .code ../repository/gcs/google_storage.go /START_IMPORT OMIT/,/END_IMPORT OMIT/
 .code ../repository/gcs/google_storage.go /START_DEFINITION OMIT/,/END_DEFINITION OMIT/
 .code ../repository/gcs/google_storage.go /START_SAVE OMIT/,/END_SAVE OMIT/
+
+* Dummy repository (for testing purpose)
+
+.code ../repository/dummy/storage.go /START_OBJECT OMIT/,/END_OBJECT OMIT/
 
 * The service level objectives of the API
 
