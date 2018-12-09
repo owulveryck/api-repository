@@ -14,11 +14,14 @@ func Register(s Saver) {
 	repository = s
 }
 
-// Saver is any object that can saver an IDer
+// Saver is any object that can save an IDer
+// START_SAVER OMIT
 type Saver interface {
-	// Save the object into path
+	// Save the object into path OMIT
 	Save(ctx context.Context, object object.IDer, path string) error
 }
+
+// END_SAVER OMIT
 
 // Save the object on the given path with the registered engine
 func Save(ctx context.Context, object object.IDer, path string) error {

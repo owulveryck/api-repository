@@ -1,14 +1,17 @@
 package gcs
 
+// START_IMPORT OMIT
 import (
-	"context"
-	"encoding/json"
+	"context"       // OMIT
+	"encoding/json" // OMIT
 
 	"cloud.google.com/go/storage"
-	"github.com/kelseyhightower/envconfig"
-	"github.com/owulveryck/api-repository/object"
-	"github.com/owulveryck/api-repository/repository"
+	"github.com/kelseyhightower/envconfig"            // OMIT
+	"github.com/owulveryck/api-repository/object"     // OMIT
+	"github.com/owulveryck/api-repository/repository" // OMIT
 )
+
+//END_IMPORT OMIT
 
 type configuration struct {
 	ProjectID string `envconfig:"PROJECT" required:"true"`
@@ -30,10 +33,13 @@ func init() {
 	repository.Register(s)
 }
 
+// START_DEFINITION OMIT
 type gcpStorage struct {
 	client *storage.Client
 	bkt    *storage.BucketHandle
 }
+
+// END_DEFINITION OMIT
 
 // NewGCPStorage returns a ready to use client.
 // It creates the bucket if it does not exists
@@ -57,6 +63,7 @@ func newGCPStorage(ctx context.Context, bucketName string) (*gcpStorage, error) 
 }
 
 // Save to fulfill the interface
+// START_SAVE OMIT
 func (g *gcpStorage) Save(ctx context.Context, object object.IDer, path string) error {
 	obj := g.bkt.Object(path + object.ID())
 	w := obj.NewWriter(ctx)
@@ -67,3 +74,5 @@ func (g *gcpStorage) Save(ctx context.Context, object object.IDer, path string) 
 	}
 	return w.Close()
 }
+
+// END_SAVE OMIT

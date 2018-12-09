@@ -1,5 +1,5 @@
-As an Ops, what do I expect from an API
-Let's code one in Go
+Product Repository, API, and SLO
+Coding a REST API in Go driven by the objectives
 15:04 7 Dec 2018
 
 Olivier Wulveryck
@@ -8,25 +8,52 @@ owulveryck@octo.com
 https://blog.owulveryck.info
 @owulveryck
 
-* The Object we are going to save
+* Use case
+
+* Abstraction of the object
+
+We will store any object that can gives its own `ID` and seriallize itself in the json format.
 
 .code ../object/interface.go /START_IDER OMIT/,/END_IDER OMIT/
 
 .link https://godoc.org/encoding/json#Unmarshaler Doc for the Unmarshaler interface
 .link https://godoc.org/encoding/json#Marshaler Doc for the Marshaler interface
 
-* Let's define a product
+* Functional element
+
+As an example, let's define and store a product:
 
 .link https://support.google.com/merchants/answer/7052112?hl=en
 
 .image assets/google_basic_product.png _ 800
 
-* And its implementation
+* The product implementation
 
+`Product` fulfils the `IDer` interface:
 .code ../product.go /START_PRODUCT OMIT/,/END_PRODUCT OMIT/
 
-* SLOs and SLIs
+* Repository
 
+TODO
+
+* The repository implementation(s)
+
+The interface: 
+.code ../repository/saver.go /START_SAVER OMIT/,/END_SAVER OMIT/
+
+* Repository on Filesystem (for testing purpose)
+
+.code ../repository/fs/storage.go /START_OBJECT OMIT/,/END_OBJECT OMIT/
+
+* Repository on Google Cloud Storage
+
+.code ../repository/gcs/google_storage.go /START_IMPORT OMIT/,/END_IMPORT OMIT/
+.code ../repository/gcs/google_storage.go /START_DEFINITION OMIT/,/END_DEFINITION OMIT/
+.code ../repository/gcs/google_storage.go /START_SAVE OMIT/,/END_SAVE OMIT/
+
+* The service level objectives of the API
+
+* Concepts of SLOs and SLIs
 
 .link https://landing.google.com/sre/sre-book/chapters/service-level-objectives/ From the Chapter 4 of the SRE BOOK (Service Level Objectives)
 
@@ -38,7 +65,7 @@ An SLI is a service level indicator — a carefully defined quantitative measure
 
 An SLO is a service level objective: a target value or range of values for a service level that is measured by an SLI. A natural structure for SLOs is thus SLI ≤ target, or lower bound ≤ SLI ≤ upper bound.
 
-* From the SRE workbook...
+* SLO Document of our API
 
 * Availability
 
@@ -47,7 +74,7 @@ An SLO is a service level objective: a target value or range of values for a ser
 The proportion of successful requests, as measured from the load balancer metrics. Any HTTP status other than 500–599 is considered successful.
 
   count of "api" http_requests which do not have a 5XX status code
-  divided by
+      divided by
   count of all "api" http_requests
 
 - Objective
@@ -61,14 +88,18 @@ The proportion of successful requests, as measured from the load balancer metric
 The proportion of sufficiently fast requests, as measured from the load balancer metrics. “Sufficiently fast” is defined as < 400 ms, or < 850 ms.
 
   count of "api" http_requests with a duration less than or equal to "0.4" seconds
-  divided by
+      divided by
   count of all "api" http_requests
 
   count of "api" http_requests with a duration less than or equal to "0.85" seconds
-  divided by
+      divided by
   count of all "api" http_requests
 
 - SLO
 
 90% of requests < 400 ms
 99% of requests < 850 ms
+
+* Measuring
+
+* Injector
