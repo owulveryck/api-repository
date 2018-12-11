@@ -37,9 +37,9 @@ func (p *Product) UnmarshalJSON(b []byte) error {
 	var aux alias                  // OMIT
 	err := json.Unmarshal(b, &aux) // OMIT
 	*p = (Product)(aux)            // OMIT
-	if p.SKU == "" {
-		return errors.New("id is null or absent")
-	}
+	if p.SKU == "" {               // OMIT
+		return errors.New("id is null or absent") // OMIT
+	} // OMIT
 	return err // OMIT
 }
 
