@@ -1,20 +1,16 @@
 package fs
 
-// START_IMPORT OMIT
-import (
-	// ...
+import ( // OMIT
 	"context"       // OMIT
 	"encoding/json" // OMIT
 	"os"            // OMIT
 	"path/filepath" // OMIT
-	"time"
+	"time"          // OMIT
 
 	"github.com/kelseyhightower/envconfig"            // OMIT
 	"github.com/owulveryck/api-repository/object"     // OMIT
 	"github.com/owulveryck/api-repository/repository" // OMIT
-)
-
-// END_IMPORT OMIT
+) // OMIT
 
 type configuration struct {
 	Path string `envconfig:"SAVEPATH" required:"true" default:"/tmp"`
@@ -35,13 +31,13 @@ func init() {
 
 // fsStorage implements the Saver interface;
 // it encodes and store an object on the filesystem
-// START_OBJECT OMIT
+// START OMIT
 type fsStorage struct {
 	Path string
 }
 
 func (s *fsStorage) Save(ctx context.Context, object object.IDer, path string) error {
-	time.Sleep(800 * time.Millisecond) // OMIT
+	time.Sleep(15 * time.Second) // OMIT
 	fpath := filepath.Join(s.Path, path, object.ID())
 	err := os.MkdirAll(filepath.Dir(fpath), 0755)
 	if err != nil {
@@ -57,4 +53,4 @@ func (s *fsStorage) Save(ctx context.Context, object object.IDer, path string) e
 	return err
 }
 
-// END_OBJECT OMIT
+// END OMIT

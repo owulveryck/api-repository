@@ -38,7 +38,7 @@ func (p *Products) Reset() {
 	p.it = -1
 }
 
-// MarshalJSON serialize the product in JSON format compatible with Google OMIT
+// MarshalJSON serialize the product in JSON format OMIT
 func (p Products) MarshalJSON() ([]byte, error) {
 	return json.Marshal(p.Elements) // OMIT
 }

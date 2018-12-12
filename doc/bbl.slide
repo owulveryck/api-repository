@@ -20,46 +20,61 @@ https://blog.owulveryck.info
 
 * Use case
 
+* What's the business value
+
+As a retailer, I want to provide a capacity to my business partners.
+This capacity will handle send me their catalog items.
+I will then add some value on their products such as selling them or
+applying some business intelligence.
+
+
+* Constraints
+
+- The capacity must be exposed as a REST Api.
+- I want the application to be elastic (to handle the sales for example).
+
+I need to take care of the TCO: 
+
+- Maintenance should be cheap: no toil for SRE;
+- Onboarding of new developers should be easy: the architecture should be explained easily;
+- Avoid vendor locking...
+
+* Implementation
+
+* Functional element
+
+An item in a catalog can be anything that is referenced by an ID. Ex a product:
+
+.link https://support.google.com/merchants/answer/7052112?hl=en
+
+.html assets/quickreference.html
+
 * Abstraction of the object
 
 We will store any object that can gives its own `ID` and seriallize itself in the json format.
 
 .code ../object/interface.go /START_IDER OMIT/,/END_IDER OMIT/
 
-.link https://godoc.org/encoding/json#Unmarshaler Doc for the Unmarshaler interface
-.link https://godoc.org/encoding/json#Marshaler Doc for the Marshaler interface
+* Handling a bulk of elements
 
-* Functional element
+Using a stateful iterator for convenience...
 
-As an example, let's define and store a product:
-
-.link https://support.google.com/merchants/answer/7052112?hl=en
-
-.html assets/quickreference.html
+.code ../object/interface.go /START_ITERATOR OMIT/,/END_ITERATOR OMIT/
 
 * The product implementation
 
 `Product` fulfils the `IDer` interface:
 .code ../business/product.go /START_PRODUCT OMIT/,/END_PRODUCT OMIT/
 
+
 * Repository
 
-TODO
+TODO: Put some explanation
 
-* The repository implementation(s)
+* The repository
 
 The interface: 
 .code ../repository/saver.go /START_SAVER OMIT/,/END_SAVER OMIT/
-
-* Repository on Google Cloud Storage
-
-.code ../repository/gcs/google_storage.go /START_IMPORT OMIT/,/END_IMPORT OMIT/
-.code ../repository/gcs/google_storage.go /START_DEFINITION OMIT/,/END_DEFINITION OMIT/
-.code ../repository/gcs/google_storage.go /START_SAVE OMIT/,/END_SAVE OMIT/
-
-* Dummy repository (for testing purpose)
-
-.code ../repository/dummy/storage.go /START_OBJECT OMIT/,/END_OBJECT OMIT/
 
 * The service level objectives of the API
 
@@ -112,4 +127,31 @@ The proportion of sufficiently fast requests, as measured from the load balancer
 
 * Measuring
 
-* Injector
+* Dummy repository (for testing purpose)
+
+.code ../repository/dummy/storage.go /START_INIT OMIT/,/END_INIT OMIT/
+.code ../repository/dummy/storage.go /START_OBJECT OMIT/,/END_OBJECT OMIT/
+
+* Handler
+
+.code test1/handler/simple.go /START_PACKAGE OMIT/,/END_PACKAGE OMIT/
+.code test1/handler/simple.go /START_HANDLER OMIT/,/END_HANDLER OMIT/
+
+* Validating
+
+.play -numbers -edit test1/main.go /START_MAIN2 OMIT/,/END_MAIN OMIT/ 
+
+* Other repository implementations
+
+* Filesystem
+
+.code ../repository/fs/storage.go /START/,/END/ 
+
+* Google Cloud Storage
+
+.code ../repository/gcs/google_storage.go /START_IMPORT OMIT/,/END_IMPORT OMIT/
+.code ../repository/gcs/google_storage.go /START_DEFINITION OMIT/,/END_DEFINITION OMIT/
+.code ../repository/gcs/google_storage.go /START_SAVE OMIT/,/END_SAVE OMIT/
+
+* Sessions
+

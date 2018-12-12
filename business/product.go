@@ -6,8 +6,9 @@ import (
 	"net/url"
 )
 
-// A Product that your potential customers would be searching for on Google
 // START_PRODUCT OMIT
+
+// A Product that your potential customers would be searching for on Google
 type Product struct {
 	SKU                 string   `json:"id"`
 	Title               string   `json:"title"`
