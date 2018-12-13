@@ -130,7 +130,7 @@ The proportion of sufficiently fast requests, as measured from the load balancer
 90% of requests < 400 ms
 99% of requests < 850 ms
 
-* Measuring
+* First attempt: 
 
 * Dummy DAO (for testing purpose)
 
@@ -144,7 +144,18 @@ The proportion of sufficiently fast requests, as measured from the load balancer
 
 * Validating
 
+.code -numbers -edit test1/main.go /START_IMPORT OMIT/,/END_IMPORT OMIT/ 
 .play -numbers -edit test1/main.go /START_MAIN2 OMIT/,/END_MAIN OMIT/ 
+
+* Concurrent requests
+
+.play -numbers -edit test2/main.go /START_MAIN2 OMIT/,/END_MAIN OMIT/ 
+
+* Measure the SLO
+
+.play -numbers -edit test3/main.go /START_MAIN2 OMIT/,/END_MAIN OMIT/ 
+
+* I need a bulk!
 
 * Other DAO implementations
 
@@ -161,6 +172,12 @@ The proportion of sufficiently fast requests, as measured from the load balancer
 * Sessions
 
 * Conclusions
+
+* Documenting the API does not give any guarantee about its usage
+
+_Murphy's_ _Law_:
+
+  things will go wrong in any given situation, if you give them a chance 
 
 * HTTP codes used along with this presentation
 

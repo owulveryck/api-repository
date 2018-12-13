@@ -1,22 +1,26 @@
 package main
 
+// START_IMPORT OMIT
 import (
-	"bytes"
-	"io"
-	"log"
-	"net/http"
-	"net/http/httptest"
-	"os"
-	"time"
+	"bytes"             //OMIT
+	"fmt"               //OMIT
+	"io"                //OMIT
+	"log"               //OMIT
+	"net/http"          //OMIT
+	"net/http/httptest" //OMIT
+	"os"                //OMIT
+	"time"              //OMIT
 
-	"github.com/owulveryck/api-repository/business"
+	"github.com/owulveryck/api-repository/business"    // HL
+	_ "github.com/owulveryck/api-repository/dao/dummy" // HL
+
+	// END_IMPORT OMIT
 	"github.com/owulveryck/api-repository/doc/test1/handler"
-	_ "github.com/owulveryck/api-repository/repository/dummy" // HL
 )
 
 func main() {
 	// START_MAIN2 OMIT
-	os.Setenv("DUMMY_DURATION", "0s") // HL
+	os.Setenv("DUMMY_DURATION", "0s")
 	// START_MAIN OMIT
 	http.Handle("/product", handler.SimplePost{
 		Element: &business.Product{}, // HL
@@ -24,15 +28,17 @@ func main() {
 	})
 	ts := httptest.NewServer(http.DefaultServeMux)
 	defer ts.Close()
-	buf := bytes.NewBufferString(`{ "id":"1234", "title":"my title", "description": "description" }`)
-	start := time.Now()
-	resp, err := http.Post(ts.URL+"/product", "application/json", buf)
-	if err != nil {
-		log.Println(err)
-	}
-	log.Println("Time taken", time.Since(start))
-	defer resp.Body.Close()
-	io.Copy(os.Stdout, resp.Body)
+	for i := 0; i < 10; i++ { // HL
+		buf := bytes.NewBufferString(`{ "id":"1234", "title":"my title", "description": "description" }`)
+		start := time.Now()
+		resp, err := http.Post(ts.URL+"/product", "application/json", buf) // HL
+		if err != nil {
+			log.Println(err)
+		}
+		fmt.Println("Time taken", time.Since(start))
+		fmt.Println(resp.Status)
+		io.Copy(os.Stdout, resp.Body)
+		resp.Body.Close()
+	} // HL
 	// END_MAIN OMIT
-
 }

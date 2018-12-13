@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/owulveryck/api-repository/dao"
 	"github.com/owulveryck/api-repository/object"
-	"github.com/owulveryck/api-repository/repository"
 )
 
 // SimplePost handler for an IDer
@@ -31,7 +31,7 @@ func (e SimplePost) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				http.StatusUnprocessableEntity) // HL
 			return
 		}
-		err = repository.Save(r.Context(), e.Element, e.Path) // HL
+		err = dao.Save(r.Context(), e.Element, e.Path) // HL
 		if err != nil {
 			http.Error(w, "Cannot save "+err.Error(), http.StatusUnprocessableEntity)
 			return

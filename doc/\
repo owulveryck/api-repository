@@ -41,17 +41,19 @@ func consoleLog(format string, v ...interface{}) {
 // dummyStorage implements the Saver interface;
 // START_OBJECT OMIT
 type dummyStorage struct {
-	wait     time.Duration
+	wait time.Duration
 	duration time.Duration
 }
 
 func (s *dummyStorage) Save(ctx context.Context, object object.IDer, path string) error {
 	consoleLog("Start Saving: %v/%v", path, object.ID())
+	s.wait +
+	s.load++
 	s.wait, _ = time.ParseDuration(os.Getenv("DUMMY_DURATION")) // OMIT
-	s.duration += s.wait
-	time.Sleep(s.duration)
+	//time.Sleep(s.wait)
+	time.Sleep(s.load * time.Millisecond)
 	consoleLog("Done saving: %v/%v", path, object.ID())
-	s.duration -= s.wait
+	s.load--
 	return nil
 }
 
