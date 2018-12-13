@@ -7,9 +7,10 @@ import ( // OMIT
 	"path/filepath" // OMIT
 	"time"          // OMIT
 
-	"github.com/kelseyhightower/envconfig"            // OMIT
-	"github.com/owulveryck/api-repository/object"     // OMIT
-	"github.com/owulveryck/api-repository/repository" // OMIT
+	"github.com/kelseyhightower/envconfig" // OMIT
+	"github.com/owulveryck/api-repository/dao"
+	"github.com/owulveryck/api-repository/object" // OMIT
+	// OMIT
 ) // OMIT
 
 type configuration struct {
@@ -24,7 +25,7 @@ func init() {
 		panic(err)
 	}
 
-	repository.Register(&fsStorage{
+	dao.Register(&fsStorage{
 		config.Path,
 	})
 }

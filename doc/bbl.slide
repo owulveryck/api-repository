@@ -1,4 +1,4 @@
-Product Repository, API, and SLO
+DTO, DAO, API, SLO and Go
 Coding a REST API in Go driven by the objectives
 15:04 7 Dec 2018
 
@@ -49,7 +49,7 @@ An item in a catalog can be anything that is referenced by an ID. Ex a product:
 
 .html assets/quickreference.html
 
-* Abstraction of the object
+* The Data Transfer Object
 
 We will store any object that can gives its own `ID` and seriallize itself in the json format.
 
@@ -67,14 +67,19 @@ Using a stateful iterator for convenience...
 .code ../business/product.go /START_PRODUCT OMIT/,/END_PRODUCT OMIT/
 
 
-* Repository
+* The Data Access Object
 
-TODO: Put some explanation
+From Wikipedia:
 
-* The repository
+  In computer software, a data access object (DAO) is an object that provides 
+  an abstract interface to some type of database or other persistence mechanism. 
 
-The interface: 
-.code ../repository/saver.go /START_SAVER OMIT/,/END_SAVER OMIT/
+  By mapping application calls to the persistence layer, 
+  the DAO provides some specific data operations without exposing details of the database.
+
+* The interface of the DAO
+
+.code ../dao/saver.go /START_SAVER OMIT/,/END_SAVER OMIT/
 
 * The service level objectives of the API
 
@@ -127,10 +132,10 @@ The proportion of sufficiently fast requests, as measured from the load balancer
 
 * Measuring
 
-* Dummy repository (for testing purpose)
+* Dummy DAO (for testing purpose)
 
-.code ../repository/dummy/storage.go /START_INIT OMIT/,/END_INIT OMIT/
-.code ../repository/dummy/storage.go /START_OBJECT OMIT/,/END_OBJECT OMIT/
+.code ../dao/dummy/storage.go /START_INIT OMIT/,/END_INIT OMIT/
+.code ../dao/dummy/storage.go /START_OBJECT OMIT/,/END_OBJECT OMIT/
 
 * Handler
 
@@ -141,22 +146,23 @@ The proportion of sufficiently fast requests, as measured from the load balancer
 
 .play -numbers -edit test1/main.go /START_MAIN2 OMIT/,/END_MAIN OMIT/ 
 
-* Other repository implementations
+* Other DAO implementations
 
 * Filesystem
 
-.code ../repository/fs/storage.go /START/,/END/ 
+.code ../dao/fs/storage.go /START/,/END/ 
 
 * Google Cloud Storage
 
-.code ../repository/gcs/google_storage.go /START_IMPORT OMIT/,/END_IMPORT OMIT/
-.code ../repository/gcs/google_storage.go /START_DEFINITION OMIT/,/END_DEFINITION OMIT/
-.code ../repository/gcs/google_storage.go /START_SAVE OMIT/,/END_SAVE OMIT/
+.code ../dao/gcs/google_storage.go /START_IMPORT OMIT/,/END_IMPORT OMIT/
+.code ../dao/gcs/google_storage.go /START_DEFINITION OMIT/,/END_DEFINITION OMIT/
+.code ../dao/gcs/google_storage.go /START_SAVE OMIT/,/END_SAVE OMIT/
 
 * Sessions
 
+* Conclusions
 
-* http code used
+* HTTP codes used along with this presentation
 
   egrep -hro 'http.Status[A-Za-z]+' * | sort -u
 

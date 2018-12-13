@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/google/uuid"
+	"github.com/owulveryck/api-repository/dao"
 	"github.com/owulveryck/api-repository/object"
-	"github.com/owulveryck/api-repository/repository"
 	"github.com/owulveryck/api-repository/session"
 )
 
@@ -55,7 +55,7 @@ func (w worker) Start() {
 					ID:     job.Payload.ID(),
 					Status: http.StatusCreated,
 				})
-				if err := repository.Save(context.TODO(), job.Payload, job.Path); err != nil {
+				if err := dao.Save(context.TODO(), job.Payload, job.Path); err != nil {
 					session.Upsert(context.TODO(), job.TransactionID, session.Element{
 						ID:     job.Payload.ID(),
 						Status: http.StatusInternalServerError,

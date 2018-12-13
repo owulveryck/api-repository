@@ -6,9 +6,10 @@ import (
 	"encoding/json" // OMIT
 
 	"cloud.google.com/go/storage"
-	"github.com/kelseyhightower/envconfig"            // OMIT
-	"github.com/owulveryck/api-repository/object"     // OMIT
-	"github.com/owulveryck/api-repository/repository" // OMIT
+	"github.com/kelseyhightower/envconfig" // OMIT
+	"github.com/owulveryck/api-repository/dao"
+	"github.com/owulveryck/api-repository/object" // OMIT
+	// OMIT
 )
 
 //END_IMPORT OMIT
@@ -30,7 +31,7 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-	repository.Register(s)
+	dao.Register(s)
 }
 
 // START_DEFINITION OMIT

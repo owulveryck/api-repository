@@ -6,8 +6,9 @@ import (
 	"time"
 
 	"github.com/kelseyhightower/envconfig"
-	"github.com/owulveryck/api-repository/object"     // OMIT
-	"github.com/owulveryck/api-repository/repository" // OMIT
+	"github.com/owulveryck/api-repository/dao"
+	"github.com/owulveryck/api-repository/object" // OMIT
+	// OMIT
 )
 
 // START_INIT OMIT
@@ -24,7 +25,7 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-	repository.Register(&dummyStorage{
+	dao.Register(&dummyStorage{
 		wait: config.T,
 	})
 }
