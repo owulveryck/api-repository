@@ -47,7 +47,8 @@ An item in a catalog can be anything that is referenced by an ID. Ex a product:
 
 .link https://support.google.com/merchants/answer/7052112?hl=en
 
-.html assets/quickreference.html
+.image assets/google_basic_product2.png 400 _
+#html assets/quickreference.html
 
 * The Data Transfer Object
 
@@ -156,6 +157,12 @@ The proportion of sufficiently fast requests, as measured from the load balancer
 .play -numbers -edit test3/main.go /START_MAIN2 OMIT/,/END_MAIN OMIT/ 
 
 * I need a bulk!
+
+* Let's implement concurrency...
+
+.link http://marcio.io/2015/07/handling-1-million-requests-per-minute-with-golang/ Handling 1 Million Requests per Minute with Go
+
+
 
 * Other DAO implementations
 
