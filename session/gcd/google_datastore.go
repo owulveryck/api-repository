@@ -9,13 +9,26 @@ import (
 	"cloud.google.com/go/datastore"
 	"github.com/google/uuid"
 	"github.com/julienschmidt/httprouter"
+	"github.com/kelseyhightower/envconfig"
+	"github.com/owulveryck/api-repository/session"
 )
+
+type configuration struct {
+	ProjectID  string `envconfig:"GCOUD_PROJECT" required:"true"`
+	BucketName string `envconfig:"BUCKET" required:"true"`
+}
+
+var config configuration
 
 type sessionHandler struct {
 	client *datastore.Client
 }
 
 func newSessionHandler() (*sessionHandler, error) {
+	err := envconfig.Process("", &config)
+	if err != nil {
+		panic(err)
+	}
 	ctx := context.Background()
 	client, err := datastore.NewClient(ctx, config.ProjectID)
 	if err != nil {
@@ -34,7 +47,7 @@ func (s *sessionHandler) HTTPGet(w http.ResponseWriter, r *http.Request, ps http
 	}
 
 	ctx := r.Context()
-	var t transaction
+	var t session.Transaction
 	_, err := s.client.RunInTransaction(ctx, func(tx *datastore.Transaction) error {
 		key := datastore.NameKey("Status", id, nil)
 		err := tx.Get(key, &t)
@@ -45,7 +58,7 @@ func (s *sessionHandler) HTTPGet(w http.ResponseWriter, r *http.Request, ps http
 		for i, t := range t.ElementsID {
 			keys[i] = datastore.NameKey("Element", t, key)
 		}
-		ts := make([]transactionElement, len(t.ElementsID))
+		ts := make([]session.Element, len(t.ElementsID))
 		err = tx.GetMulti(keys, ts)
 		if err != nil {
 			return err
@@ -70,7 +83,7 @@ func (s *sessionHandler) HTTPGet(w http.ResponseWriter, r *http.Request, ps http
 	}
 }
 
-func (s *sessionHandler) Create(ctx context.Context, id uuid.UUID, t *transaction) error {
+func (s *sessionHandler) Create(ctx context.Context, id uuid.UUID, t *session.Transaction) error {
 	t.ElementsID = make([]string, len(t.Elements))
 	for i, e := range t.Elements {
 		t.ElementsID[i] = e.ID
@@ -88,7 +101,7 @@ func (s *sessionHandler) Create(ctx context.Context, id uuid.UUID, t *transactio
 	log.Println(err)
 	return err
 }
-func (s *sessionHandler) Upsert(ctx context.Context, id uuid.UUID, element transactionElement) error {
+func (s *sessionHandler) Upsert(ctx context.Context, id uuid.UUID, element session.Element) error {
 	_, err := s.client.RunInTransaction(ctx, func(tx *datastore.Transaction) error {
 		key := datastore.NameKey("Status", id.String(), nil)
 		k := datastore.NameKey("Element", element.ID, key)
