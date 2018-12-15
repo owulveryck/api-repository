@@ -131,6 +131,12 @@ The proportion of sufficiently fast requests, as measured from the load balancer
 90% of requests < 400 ms
 99% of requests < 850 ms
 
+* Injector
+
+* Principle
+
+.image assets/injector.png
+
 * First attempt: 
 
 * Dummy DAO (for testing purpose)
