@@ -50,15 +50,13 @@ An item in a catalog can be anything that is referenced by an ID. Ex a product:
 .image assets/google_basic_product2.png 400 _
 #html assets/quickreference.html
 
-* The Data Transfer Object
+* The Data Transfer Objects
 
 We will store any object that can gives its own `ID` and seriallize itself in the json format.
 
 .code ../object/interface.go /START_IDER OMIT/,/END_IDER OMIT/
 
-* Handling a bulk of elements
-
-Using a stateful iterator for convenience...
+And handling bulk upload using a stateful iterator for convenience...
 
 .code ../object/interface.go /START_ITERATOR OMIT/,/END_ITERATOR OMIT/
 
@@ -66,7 +64,6 @@ Using a stateful iterator for convenience...
 
 `Product` fulfils the `IDer` interface:
 .code ../business/product.go /START_PRODUCT OMIT/,/END_PRODUCT OMIT/
-
 
 * The Data Access Object
 
@@ -78,7 +75,7 @@ From Wikipedia:
   By mapping application calls to the persistence layer, 
   the DAO provides some specific data operations without exposing details of the database.
 
-* The interface of the DAO
+Which is described as an interface
 
 .code ../dao/saver.go /START_SAVER OMIT/,/END_SAVER OMIT/
 
@@ -136,6 +133,12 @@ The proportion of sufficiently fast requests, as measured from the load balancer
 * Principle
 
 .image assets/injector.png
+
+* Implementation
+
+.code ../injector/injector.go /START_SLO OMIT/,/END_SLO OMIT/
+.code ../injector/injector.go /START_EVALUATE OMIT/,/END_EVALUATE OMIT/
+.code ../injector/injector.go /START_SEND OMIT/,/END_SEND OMIT/
 
 * First attempt: 
 
@@ -208,3 +211,12 @@ _Murphy's_ _Law_:
   - StatusUnprocessableEntity          = 422 // RFC 4918, 11.2
   
   - StatusInternalServerError          = 500 // RFC 7231, 6.6.1
+
+* References
+
+.link github.com/owulveryck/api-repository
+.link https://talks.godoc.org/github.com/owulveryck/api-repository/doc/bbl.slide
+
+   # go get github.com/owulveryck/ap-repository 
+   # present
+

@@ -10,17 +10,23 @@ import (
 )
 
 // SLO ...
+// START_SLO OMIT
 type SLO struct {
-	Latency          map[float64]time.Duration
-	Allowed5xxErrors float64
+	Latency          map[float64]time.Duration // Ex: 0.95: 450ms, 0.99: 750ms
+	Allowed5xxErrors float64                   // Ex: 0.10 (100% - 99.90%)
 	Verbose          bool
 }
+
+// END_SLO OMIT
 
 // Evaluate reads from the replyChan til it reach max responses.
 // Then it returns the SLO and decrease the waitgroup
 // It returns true if the objective is reached.
 // It is the responsibility of the call to take care that the max value will be reached
+// START_EVALUATE OMIT
+// Consuming from replyChan until max is reached and then decrease wg // HL
 func (s *SLO) Evaluate(replyChan <-chan Reply, max int, wg *sync.WaitGroup) {
+	// END_EVALUATE OMIT
 	defer wg.Done()
 	var times []time.Duration
 	returns := make(map[int]int)
@@ -74,26 +80,29 @@ type Reply struct {
 }
 
 // SendPostRequest a Post Request with the content of object as a Payload.
+// START_SEND OMIT
+// Sending object to url, send the reply to c; then decrease wg and send event to w once done
 func SendPostRequest(url, object string, w chan struct{}, wg *sync.WaitGroup, c chan<- Reply) { // HL
-	buf := bytes.NewBufferString(object)
 	defer wg.Done()
 	start := time.Now()
-	resp, err := http.Post(url, "application/json", buf)
-	if err != nil {
-		c <- Reply{
-			time.Since(start),
-			http.StatusInternalServerError,
-			err,
-		}
-		return
-	}
+	resp, err := http.Post(url, "application/json", bytes.NewBufferString(object))
+	if err != nil { // OMIT
+		c <- Reply{ // OMIT
+			time.Since(start),              // OMIT
+			http.StatusInternalServerError, // OMIT
+			err,                            // OMIT
+		} // OMIT
+		return // OMIT
+	} // OMIT
 	defer resp.Body.Close()
-	c <- Reply{
+	c <- Reply{ // HL
 		time.Since(start),
 		resp.StatusCode,
 		nil,
 	}
 	//fmt.Println(resp.Status) OMIT
 	//io.Copy(os.Stdout, resp.Body) OMIT
-	<-w
+	<-w // HL
 }
+
+// END_SEND OMIT
