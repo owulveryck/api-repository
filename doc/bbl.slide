@@ -216,6 +216,7 @@ _Murphy's_ _Law_:
 
 .link github.com/owulveryck/api-repository
 .link https://talks.godoc.org/github.com/owulveryck/api-repository/doc/bbl.slide
+.link https://godoc.org/github.com/owulveryck/api-repository
 
    # go get github.com/owulveryck/ap-repository 
    # present
