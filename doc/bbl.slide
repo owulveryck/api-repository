@@ -3,7 +3,7 @@ Designing a REST API driven by the objectives
 15:04 7 Dec 2018
 
 Olivier Wulveryck
-Consultant Ops, Octo Technology
+Consultant / SRE, Octo Technology
 owulveryck@octo.com
 https://blog.owulveryck.info
 @owulveryck
@@ -30,7 +30,7 @@ applying some business intelligence.
 
 * Constraints
 
-- The capacity must be exposed as a REST Api.
+- The capacity must be exposed as a REST API.
 - I want the application to be elastic (to handle the sales for example).
 
 I need to take care of the TCO: 
@@ -140,7 +140,7 @@ The proportion of sufficiently fast requests, as measured from the load balancer
 .code ../injector/injector.go /START_EVALUATE OMIT/,/END_EVALUATE OMIT/
 .code ../injector/injector.go /START_SEND OMIT/,/END_SEND OMIT/
 
-* First attempt: 
+* Developing the API
 
 * Dummy DAO (for testing purpose)
 
@@ -218,7 +218,7 @@ _Murphy's_ _Law_:
 .link https://talks.godoc.org/github.com/owulveryck/api-repository/doc/bbl.slide
 .link https://godoc.org/github.com/owulveryck/api-repository
 
-   # go get github.com/owulveryck/ap-repository 
+   # go get github.com/owulveryck/api-repository 
    # present
 
 .image http://www.unitag.io/qreator/generate?crs=xnjFkEn%252FP85fCPDXJ%252FXXKg5g6yQi7H4qzUlRVUntU035Re8CX7iHj071HbqF%252BCfYW0fkByoDtlWAYEP%252FkF2dipjP8Ux69VtYkusoonlKTAkgSRnmfwEzhpz3ulb%252BfgcH8xxrpOTbfLtqZS7YE5Pf9g%253D%253D&crd=fhOysE0g3Bah%252BuqXA7NPQ%252BnMbKAfwrOmvCu%252Fck4sYh0tYbiaJjNiLznCAt%252Fz8zSIOwn%252FtIMh1rhiigFow7meWwUQGD3HT6BAW9aa%252FtrpQJBG6VBs7QRL1sGQdgnrfJiYRhblqsYYpMYZvzutihyh5M5Ab74LILbnkcnwmwaV3xM%253D
