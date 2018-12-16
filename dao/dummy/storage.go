@@ -14,16 +14,17 @@ import (
 
 // START_INIT OMIT
 type configuration struct {
-	T   time.Duration `envconfig:"DURATION" required:"true" default:"0s"`
+	T   time.Duration `envconfig:"DURATION" required:"true" default:"0s"` // HL
 	Log bool
 }
+
+// END_INIT OMIT
 
 var config configuration
 
 func init() {
 	err := envconfig.Process("DUMMY", &config)
 	// ...
-	// END_INIT OMIT
 	if err != nil {
 		panic(err)
 	}
@@ -48,10 +49,10 @@ type dummyStorage struct {
 func (s *dummyStorage) Save(ctx context.Context, object object.IDer, path string) error {
 	consoleLog("Start Saving: %v/%v", path, object.ID())
 	s.wait, _ = time.ParseDuration(os.Getenv("DUMMY_DURATION")) // OMIT
-	s.duration += s.wait
-	time.Sleep(s.duration)
+	s.duration += s.wait                                        // HL
+	time.Sleep(s.duration)                                      // HL
 	consoleLog("Done saving: %v/%v", path, object.ID())
-	s.duration -= s.wait
+	s.duration -= s.wait // HL
 	return nil
 }
 

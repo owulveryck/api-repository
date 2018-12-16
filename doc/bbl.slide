@@ -113,22 +113,22 @@ The proportion of successful requests, as measured from the load balancer metric
 
 - SLI
 
-The proportion of sufficiently fast requests, as measured from the load balancer metrics. “Sufficiently fast” is defined as < 400 ms, or < 850 ms.
+The proportion of sufficiently fast requests, as measured from the load balancer metrics. “Sufficiently fast” is defined as < 400 ms, or < 750 ms.
 
   count of "api" http_requests with a duration less than or equal to "0.4" seconds
       divided by
   count of all "api" http_requests
 
-  count of "api" http_requests with a duration less than or equal to "0.85" seconds
+  count of "api" http_requests with a duration less than or equal to "0.75" seconds
       divided by
   count of all "api" http_requests
 
 - SLO
 
 90% of requests < 400 ms
-99% of requests < 850 ms
+99% of requests < 750 ms
 
-* Injector
+* Measuring with an Injector
 
 * Principle
 
@@ -140,6 +140,10 @@ The proportion of sufficiently fast requests, as measured from the load balancer
 .code ../injector/injector.go /START_EVALUATE OMIT/,/END_EVALUATE OMIT/
 .code ../injector/injector.go /START_SEND OMIT/,/END_SEND OMIT/
 
+* For testing
+
+.code my/myslo.go /START_SLO OMIT/,/END_SLO OMIT/
+
 * Developing the API
 
 * Dummy DAO (for testing purpose)
@@ -149,25 +153,18 @@ The proportion of sufficiently fast requests, as measured from the load balancer
 
 * Handler
 
-.code test1/handler/simple.go /START_PACKAGE OMIT/,/END_PACKAGE OMIT/
+A Handler responds to an HTTP request.
+
 .code test1/handler/simple.go /START_HANDLER OMIT/,/END_HANDLER OMIT/
 
 * Validating
 
-.code -numbers -edit test1/main.go /START_IMPORT OMIT/,/END_IMPORT OMIT/ 
-.play -numbers -edit test1/main.go /START_MAIN2 OMIT/,/END_MAIN OMIT/ 
-
-* Concurrent requests
-
-.play -numbers -edit test2/main.go /START_MAIN2 OMIT/,/END_MAIN OMIT/ 
-
-* Measure the SLO
-
-.play -numbers -edit test3/main.go /START_MAIN2 OMIT/,/END_MAIN OMIT/ 
+.code -numbers -edit test1/main.go /START_TEST_SERVER OMIT/,/END_TEST_SERVER OMIT/ 
+.play -numbers -edit test1/main.go /START_SEND OMIT/,/END_SEND OMIT/ 
 
 * I need a bulk!
 
-* Let's implement concurrency...
+* Let's implement concurrency in the API
 
 .link http://marcio.io/2015/07/handling-1-million-requests-per-minute-with-golang/ Handling 1 Million Requests per Minute with Go
 

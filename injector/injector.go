@@ -9,6 +9,11 @@ import (
 	"time"
 )
 
+const (
+	okColor = "\033[1;42m%s\033[0m"
+	koColor = "\033[1;36m%s\033[0m"
+)
+
 // SLO ...
 // START_SLO OMIT
 type SLO struct {
@@ -49,7 +54,7 @@ func (s *SLO) Evaluate(replyChan <-chan Reply, max int, wg *sync.WaitGroup) {
 			slo = false
 		}
 		if s.Verbose {
-			fmt.Printf("%v%% of Requests are less than %v (Expected %v)\n", k*100, latency, v)
+			fmt.Printf("%v%% < %v (Expected %v)\n", k*100, latency, v)
 		}
 	}
 	total5xx := 0
@@ -60,7 +65,7 @@ func (s *SLO) Evaluate(replyChan <-chan Reply, max int, wg *sync.WaitGroup) {
 	}
 	percent5xx := float64(total5xx) / float64(max) * 100
 	if s.Verbose {
-		fmt.Printf("%2.2f%% of requests are 5xx (expected %2.2f%%)\n", percent5xx, s.Allowed5xxErrors)
+		fmt.Printf("%2.2f%% of requests are 5xx (max allowed %2.2f%%)\n", percent5xx, s.Allowed5xxErrors)
 	}
 	if percent5xx >= s.Allowed5xxErrors {
 		slo = false

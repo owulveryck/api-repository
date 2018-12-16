@@ -2,37 +2,41 @@ digraph G {
    rankdir =  LR;
    bgcolor= transparent;
 
-  server [shape=star; label="API\nserver"];
-
-   subgraph cluster_consumer {
-        rankdir=LR;
-        label="SendPostRequest";
-
-        node [shape=Mrecord; label="<s1>Send Request|<s2>Get Result|<p2>Send result to channel"];
-        send1;
-        send2;
-        send3;
-        sendn;
-   }
-    send1:s1 -> server;
-    server -> send1:s2;
-    send2:s1 -> server;
-    server -> send2:s2;
-    send3:s1 -> server;
-    server -> send3:s2;
-    sendn:s1 -> server;
-    server -> sendn:s2;
-  subgraph cluster_slo {
-        label="SLO";
-        evaluate [shape=Mrecord;label="<p1>While elements in Channel do\nprocess results\nend while|analyse results|evaluate SLO"];
+  subgraph cluster_api {
+    server [shape=star; label="API\nserver"];
   }
 
-   send1:p2 -> chanReply;
-   send2:p2 -> chanReply;
-   send3:p2 -> chanReply;
-   sendn:p2 -> chanReply;
+  subgraph cluster_injector {
+      label="Package injector";
+         subgraph cluster_consumer {
+              rankdir=LR;
+              label="SendPostRequest";
 
-   chanReply -> evaluate:p1;
-   chanReply [shape=cylinder;];
+              node [shape=Mrecord; label="<s1>Send Request|<s2>Get Result|<p2>Send result to channel"];
+              send1;
+              send2;
+              send3;
+              sendn;
+         }
+          send1:s1 -> server;
+          server -> send1:s2;
+          send2:s1 -> server;
+          server -> send2:s2;
+          send3:s1 -> server;
+          server -> send3:s2;
+          sendn:s1 -> server;
+          server -> sendn:s2;
+        subgraph cluster_slo {
+              label="SLO";
+              evaluate [shape=Mrecord;label="<p1>While elements in Channel do\nprocess results\nend while|analyse results|evaluate SLO"];
+        }
 
+         send1:p2 -> chanReply;
+         send2:p2 -> chanReply;
+         send3:p2 -> chanReply;
+         sendn:p2 -> chanReply;
+
+         chanReply -> evaluate:p1;
+         chanReply [shape=cylinder;];
+  }
 }

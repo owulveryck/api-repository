@@ -1,8 +1,5 @@
 // Package handler for documentation purpose
-// START_PACKAGE OMIT
 package handler
-
-// END_PACKAGE OMIT
 
 import (
 	"encoding/json"
