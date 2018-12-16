@@ -22,22 +22,16 @@ https://blog.owulveryck.info
 
 * What's the business value
 
-As a retailer, I want to provide a capacity to my business partners.
-This capacity will handle send me their catalog items.
-I will then add some value on their products such as selling them or
-applying some business intelligence.
+As a retailer, I want to expose a capacity that will allow my clients and partners 
+to send their product items to my platform and to get them back with some value added.
 
+- The capacity is exposed through a REST API
+- Only the POST request is addressed in this talk
 
-* Constraints
+* The team
 
-- The capacity must be exposed as a REST API.
-- I want the application to be elastic (to handle the sales for example).
-
-I need to take care of the TCO: 
-
-- Maintenance should be cheap: no toil for SRE;
-- Onboarding of new developers should be easy: the architecture should be explained easily;
-- Avoid vendor locking...
+- The Dev: her/his goal is to develop a great product that provide the best value for the company. She/He talks about software quality and about new features.
+- The *SRE* (_me_): her/his goal is to create ultra-scalable and highly reliable software systems. He talks about infrastructure, elasticity, cloud and automation.
 
 * Implementation
 
@@ -79,7 +73,16 @@ Which is described as an interface
 
 .code ../dao/saver.go /START_SAVER OMIT/,/END_SAVER OMIT/
 
-* The service level objectives of the API
+* What about the SRE
+
+SRE wants the system to be *reliable* and *available*. 
+
+- Indicators are used to measure availability
+- Objectives are used to measure reliability
+
+If the system is more reliable than expected, more risks are allowed: this is the *error* *budget*.
+
+The *error* *budget* is spend in risky operations (deploying more often, improving the infrastructure or implementing a new deployment system to reduce toil, ...). 
 
 * Concepts of SLOs and SLIs
 
@@ -128,7 +131,7 @@ The proportion of sufficiently fast requests, as measured from the load balancer
 90% of requests < 400 ms
 99% of requests < 750 ms
 
-* Measuring with an Injector
+* Measurement method
 
 * Principle
 
@@ -159,16 +162,23 @@ A Handler responds to an HTTP request.
 
 * Validating
 
-.code -numbers -edit test1/main.go /START_TEST_SERVER OMIT/,/END_TEST_SERVER OMIT/ 
-.play -numbers -edit test1/main.go /START_SEND OMIT/,/END_SEND OMIT/ 
+.code -numbers -edit test1/simple.go /START_TEST_SERVER OMIT/,/END_TEST_SERVER OMIT/ 
+.play -numbers -edit test1/simple.go /START_SEND OMIT/,/END_SEND OMIT/ 
 
-* I need a bulk!
+* Feature Request: I need a bulk!
+
+.code test1/handler/bundle.go /START_HANDLER OMIT/,/END_HANDLER OMIT/
+
+* Validating
+
+.code -numbers -edit test1/bundle.go /START_TEST_SERVER OMIT/,/END_TEST_SERVER OMIT/ 
+.play -numbers -edit test1/bundle.go /START_SEND OMIT/,/END_SEND OMIT/ 
+
+* What if you ask the SRE to develop it?
 
 * Let's implement concurrency in the API
 
 .link http://marcio.io/2015/07/handling-1-million-requests-per-minute-with-golang/ Handling 1 Million Requests per Minute with Go
-
-
 
 * Other DAO implementations
 
@@ -219,3 +229,8 @@ _Murphy's_ _Law_:
    # present
 
 .image http://www.unitag.io/qreator/generate?crs=xnjFkEn%252FP85fCPDXJ%252FXXKg5g6yQi7H4qzUlRVUntU035Re8CX7iHj071HbqF%252BCfYW0fkByoDtlWAYEP%252FkF2dipjP8Ux69VtYkusoonlKTAkgSRnmfwEzhpz3ulb%252BfgcH8xxrpOTbfLtqZS7YE5Pf9g%253D%253D&crd=fhOysE0g3Bah%252BuqXA7NPQ%252BnMbKAfwrOmvCu%252Fck4sYh0tYbiaJjNiLznCAt%252Fz8zSIOwn%252FtIMh1rhiigFow7meWwUQGD3HT6BAW9aa%252FtrpQJBG6VBs7QRL1sGQdgnrfJiYRhblqsYYpMYZvzutihyh5M5Ab74LILbnkcnwmwaV3xM%253D
+
+* Misc
+
+.link https://www.kaggle.com/rtatman/universal-product-code-database
+.link https://www.kaggle.com/PromptCloudHQ/innerwear-data-from-victorias-secret-and-others#ae_com.csv
