@@ -176,17 +176,17 @@ A Handler responds to an HTTP request.
 
 * What if you ask the SRE to develop it?
 
+- Infrastructure is slow...
+- Infrastructure can fail...
+- This should not impact the reliability of the service!
+
 * Let's implement concurrency in the API
 
 .link http://marcio.io/2015/07/handling-1-million-requests-per-minute-with-golang/ Handling 1 Million Requests per Minute with Go
 
-* Other DAO implementations
+* Running at scale (in the cloud)
 
-* Filesystem
-
-.code ../dao/fs/storage.go /START/,/END/ 
-
-* Google Cloud Storage
+* DAO in Google Cloud Storage
 
 .code ../dao/gcs/google_storage.go /START_IMPORT OMIT/,/END_IMPORT OMIT/
 .code ../dao/gcs/google_storage.go /START_DEFINITION OMIT/,/END_DEFINITION OMIT/
@@ -201,6 +201,10 @@ A Handler responds to an HTTP request.
 _Murphy's_ _Law_:
 
   things will go wrong in any given situation, if you give them a chance 
+
+* Define Objectives
+
+* Use the error budget
 
 * HTTP codes used along with this presentation
 
@@ -234,3 +238,9 @@ _Murphy's_ _Law_:
 
 .link https://www.kaggle.com/rtatman/universal-product-code-database
 .link https://www.kaggle.com/PromptCloudHQ/innerwear-data-from-victorias-secret-and-others#ae_com.csv
+
+* DAO Filesystem
+
+.code ../dao/fs/storage.go /START/,/END/ 
+
+
