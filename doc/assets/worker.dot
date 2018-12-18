@@ -1,0 +1,53 @@
+digraph G {
+    rankdir="LR";
+     bgcolor= transparent;
+    subgraph cluster_handler {
+        label="Web server";
+        node [shape="Mrecord"; label="Get Data|Send job queue|Send OK"];
+        handler1;
+        handler2 [label="..."];
+    }
+    subgraph cluster_channel {
+        rankdir=TD;
+        label="Buffered Channel (jobQueue)";
+        node [shape="Mrecord";label="job|DTO"];
+        {
+              rank = same;
+              job1; 
+              job2;
+        }
+        { 
+              rank = same;
+              job5 [ label="..."];
+        }
+        { 
+              rank = same;
+              job9;
+              job10;
+        }
+    }
+    subgraph cluster_pool {
+          label="Worker Pool";
+          node [shape="Mrecord"];
+          worker1;
+          worker2;
+    }
+    subgraph cluster_dao {
+          label="DAO";
+          node [shape="box"];
+          saver1;
+          saver2;
+    }
+
+    concentrate=true;
+    handler1 -> job1;
+    job1 -> handler1;
+    handler2 -> job2;
+
+    job9 -> worker1;
+    job10 -> worker2;
+
+
+    worker1 -> saver1;
+    worker2 -> saver2;
+}

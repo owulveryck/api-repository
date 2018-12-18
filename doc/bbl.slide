@@ -184,6 +184,8 @@ A Handler responds to an HTTP request.
 
 .link http://marcio.io/2015/07/handling-1-million-requests-per-minute-with-golang/ Handling 1 Million Requests per Minute with Go
 
+.image assets/worker.png
+
 * Running at scale (in the cloud)
 
 * DAO in Google Cloud Storage
