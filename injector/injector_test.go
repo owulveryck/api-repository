@@ -1,26 +1,25 @@
-package main
+package injector
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"sync"
+	"testing"
 	"time"
 
 	"github.com/owulveryck/api-repository/business"
 	_ "github.com/owulveryck/api-repository/dao/dummy" // HL
 	"github.com/owulveryck/api-repository/doc/test1/handler"
-	"github.com/owulveryck/api-repository/injector"
 )
 
 var ts *httptest.Server
 
 var concurrency, numElements int
 
-func main() {
-	log.Println("Starting")
+func TestInjector(t *testing.T) {
+	t.Log("Starting")
 	// START_MAIN OMIT
 	http.Handle("/product", handler.SimplePost{
 		Element: &business.Product{}, // HL
@@ -33,8 +32,8 @@ func main() {
 	wg := new(sync.WaitGroup)
 	concurrency = 200
 	numElements = 10000
-	durations := make(chan injector.Reply)
-	slo := &injector.SLO{
+	durations := make(chan Reply)
+	slo := &SLO{
 		Latency: map[float64]time.Duration{
 			0.95: 400 * time.Millisecond,
 			0.99: 750 * time.Millisecond,
@@ -50,7 +49,7 @@ func main() {
 	for i := 0; i < numElements; i++ { // Number of elements // HL
 		ws <- struct{}{}
 		wg.Add(1)
-		go injector.SendPostRequest(ts.URL+"/product", fmt.Sprintf(tmpl, i), ws, wg, durations) // HL
+		go SendPostRequest(ts.URL+"/product", fmt.Sprintf(tmpl, i), ws, wg, durations) // HL
 	}
 	wg.Wait()
 }
