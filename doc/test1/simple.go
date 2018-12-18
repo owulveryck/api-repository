@@ -6,6 +6,8 @@ package main
 import (
 	//OMIT
 	"fmt" //OMIT
+	"log"
+	"time"
 
 	//OMIT
 	//OMIT
@@ -44,11 +46,13 @@ func main() {
 	go my.SLO.Evaluate(replyChan, numberOfElements, wg)
 	concurrencyChan := make(chan struct{}, concurrency) // Number of concurrent calls
 	tmpl := `{ "id":"%v", "title":"my title", "description": "description" }`
+	t := time.Now()
 	for i := 0; i < numberOfElements; i++ {
 		concurrencyChan <- struct{}{}
 		wg.Add(1)
 		go injector.SendPostRequest(ts.URL+"/product", fmt.Sprintf(tmpl, i), concurrencyChan, wg, replyChan)
 	}
 	wg.Wait()
+	log.Println(time.Since(t))
 	// END_SEND OMIT
 }

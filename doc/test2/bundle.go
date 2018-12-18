@@ -15,32 +15,38 @@ import (
 	"sync"
 
 	//OMIT
-	"github.com/owulveryck/api-repository/business"    // HL
-	_ "github.com/owulveryck/api-repository/dao/dummy" // HL
+	"github.com/owulveryck/api-repository/business"                 // HL
+	_ "github.com/owulveryck/api-repository/dao/dummy"              // HL
+	_ "github.com/owulveryck/api-repository/doc/test2/session/void" // OMIT
 	"github.com/owulveryck/api-repository/injector"
+	"github.com/owulveryck/api-repository/worker"
 
 	// END_IMPORT OMIT
 	"github.com/owulveryck/api-repository/doc/my"
-	"github.com/owulveryck/api-repository/doc/test1/handler"
+	"github.com/owulveryck/api-repository/doc/test2/handler"
 )
 
 func main() {
 	// START_TEST_SERVER OMIT
-	http.Handle("/product", handler.BundlePost{
-		Elements: &business.Products{}, // HL
-		Path:     "/product",
+	jobQueue := worker.NewJobQueue(100)    // HL
+	dispatcher := worker.NewDispatcher(50) // HL
+	dispatcher.Run()
+	http.Handle("/products", handler.BundlePost{
+		Elements:  &business.Products{}, // HL
+		Path:      "/products",
+		JobQueue:  jobQueue,
+		MaxLength: 10000,
 	})
 	ts := httptest.NewServer(http.DefaultServeMux)
 	defer ts.Close()
-	// END_TEST_SERVER OMIT
-
 	wg := new(sync.WaitGroup)
 	replyChan := make(chan injector.Reply)
-	// START_SEND OMIT
-	concurrency := 1                   // HL
-	numberOfElements := 10             // HL
-	numberOfElementsInPayload := 10    // HL
+	concurrency := 100                 // HL
+	numberOfElements := 10000          // HL
+	numberOfElementsInPayload := 100   // HL
 	os.Setenv("DUMMY_DURATION", "0ms") // HL
+	//...
+	// END_TEST_SERVER OMIT
 	wg.Add(1)
 	go my.SLO.Evaluate(replyChan, numberOfElements, wg)
 	concurrencyChan := make(chan struct{}, concurrency) // Number of concurrent calls
@@ -50,11 +56,10 @@ func main() {
 		wg.Add(1)
 		// Construct the payload ...
 		elements := constructPayload(i, numberOfElementsInPayload)
-		go injector.SendPostRequest(ts.URL+"/product", elements, concurrencyChan, wg, replyChan)
+		go injector.SendPostRequest(ts.URL+"/products", elements, concurrencyChan, wg, replyChan)
 	}
 	wg.Wait()
 	log.Println(time.Since(t))
-	// END_SEND OMIT
 }
 
 func constructPayload(i, numberOfElementsInPayload int) string {

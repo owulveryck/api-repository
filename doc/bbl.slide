@@ -165,6 +165,8 @@ A Handler responds to an HTTP request.
 .code -numbers -edit test1/simple.go /START_TEST_SERVER OMIT/,/END_TEST_SERVER OMIT/ 
 .play -numbers -edit test1/simple.go /START_SEND OMIT/,/END_SEND OMIT/ 
 
+: notes1
+
 * Feature Request: I need a bulk!
 
 .code test1/handler/bundle.go /START_HANDLER OMIT/,/END_HANDLER OMIT/
@@ -185,6 +187,23 @@ A Handler responds to an HTTP request.
 .link http://marcio.io/2015/07/handling-1-million-requests-per-minute-with-golang/ Handling 1 Million Requests per Minute with Go
 
 .image assets/worker.png
+
+* Adaptation to our context
+
+.code ../worker/worker.go /START_JOB OMIT/,/END_JOB OMIT/
+.code ../worker/worker.go /START_POOL OMIT/,/END_POOL OMIT/
+
+* Asynchronous Handler (bundle)
+
+.code test2/handler/bundle.go /START_HANDLER OMIT/,/END_HANDLER OMIT/
+.code test2/handler/bundle.go /START_SERVER OMIT/,/END_SERVER OMIT/
+
+* Validating
+
+.play -numbers -edit test2/bundle.go /START_TEST_SERVER OMIT/,/END_TEST_SERVER OMIT/ 
+
+* Handling the results (code http 207)
+
 
 * Running at scale (in the cloud)
 

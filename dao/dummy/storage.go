@@ -49,8 +49,8 @@ type dummyStorage struct {
 }
 
 func (s *dummyStorage) Save(ctx context.Context, object object.IDer, path string) error {
-	s.Lock()
-	defer s.Unlock()
+	//s.Lock()
+	//defer s.Unlock()
 	consoleLog("Start Saving: %v/%v", path, object.ID())
 	s.wait, _ = time.ParseDuration(os.Getenv("DUMMY_DURATION")) // OMIT
 	s.duration += s.wait                                        // HL
