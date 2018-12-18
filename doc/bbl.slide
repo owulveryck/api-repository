@@ -178,13 +178,14 @@ A Handler responds to an HTTP request.
 
 * What if you ask the SRE to develop it?
 
-- Infrastructure is slow...
+- Network is not your friend...
 - Infrastructure can fail...
+- ...
 - This should not impact the reliability of the service!
 
 * Let's implement concurrency in the API
 
-.link http://marcio.io/2015/07/handling-1-million-requests-per-minute-with-golang/ Handling 1 Million Requests per Minute with Go
+.link http://marcio.io/2015/07/handling-1-million-requests-per-minute-with-golang/ Reference: Handling 1 Million Requests per Minute with Go
 
 .image assets/worker.png
 
@@ -204,6 +205,8 @@ A Handler responds to an HTTP request.
 
 * Handling the results (code http 207)
 
+How do we know that a product has been insterted in the DAO?
+
 
 * Running at scale (in the cloud)
 
@@ -213,7 +216,20 @@ A Handler responds to an HTTP request.
 .code ../dao/gcs/google_storage.go /START_DEFINITION OMIT/,/END_DEFINITION OMIT/
 .code ../dao/gcs/google_storage.go /START_SAVE OMIT/,/END_SAVE OMIT/
 
-* Sessions
+* Sessions Google datastore
+
+
+* Deployment on a PaaS (Google App Engine)
+
+  app.yaml:
+.code -numbers ../app.yaml
+
+Then run
+
+    # gsutil mb -l us-east1 gs://api-repository-owulveryck/
+    # gcloud app deploy
+
+* Test live
 
 * Conclusions
 
@@ -223,11 +239,23 @@ _Murphy's_ _Law_:
 
   things will go wrong in any given situation, if you give them a chance 
 
-* Define Objectives
+* Use Objectives
+
+- Defining objectives is the work of the whole team, not just the SRE.
+- Measure the indicators
+- Test the load to tune the infrastructure
 
 * Use the error budget
 
+- Do not push new features if your error budget and/or the SLO is exceeded.
+
+* Conclusion
+
+The reliability of the application is as important as its quality.
+It has an impact on its hosting infrastructure and on its *software* *design*.
+
 * HTTP codes used along with this presentation
+
 
   egrep -hro 'http.Status[A-Za-z]+' * | sort -u
 
@@ -254,14 +282,3 @@ _Murphy's_ _Law_:
    # present
 
 .image http://www.unitag.io/qreator/generate?crs=xnjFkEn%252FP85fCPDXJ%252FXXKg5g6yQi7H4qzUlRVUntU035Re8CX7iHj071HbqF%252BCfYW0fkByoDtlWAYEP%252FkF2dipjP8Ux69VtYkusoonlKTAkgSRnmfwEzhpz3ulb%252BfgcH8xxrpOTbfLtqZS7YE5Pf9g%253D%253D&crd=fhOysE0g3Bah%252BuqXA7NPQ%252BnMbKAfwrOmvCu%252Fck4sYh0tYbiaJjNiLznCAt%252Fz8zSIOwn%252FtIMh1rhiigFow7meWwUQGD3HT6BAW9aa%252FtrpQJBG6VBs7QRL1sGQdgnrfJiYRhblqsYYpMYZvzutihyh5M5Ab74LILbnkcnwmwaV3xM%253D
-
-* Misc
-
-.link https://www.kaggle.com/rtatman/universal-product-code-database
-.link https://www.kaggle.com/PromptCloudHQ/innerwear-data-from-victorias-secret-and-others#ae_com.csv
-
-* DAO Filesystem
-
-.code ../dao/fs/storage.go /START/,/END/ 
-
-

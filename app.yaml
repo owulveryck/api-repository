@@ -1,0 +1,8 @@
+runtine: go111
+
+env_variables:
+  GCP_BUCKET: "api-repository-owulveryck"
+
+handlers:
+- url: /.*
+  script: auto

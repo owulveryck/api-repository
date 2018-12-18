@@ -16,7 +16,7 @@ import (
 
 type configuration struct {
 	ProjectID string `envconfig:"PROJECT" required:"true"`
-	Bucket    string `envconfig:"BUCKER" required:"true"`
+	Bucket    string `envconfig:"BUCKET" required:"true"`
 }
 
 var config configuration
