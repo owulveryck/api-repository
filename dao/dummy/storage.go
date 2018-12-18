@@ -4,6 +4,7 @@ import (
 	"context" // OMIT
 	"log"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/kelseyhightower/envconfig"
@@ -42,11 +43,14 @@ func consoleLog(format string, v ...interface{}) {
 // dummyStorage implements the Saver interface;
 // START_OBJECT OMIT
 type dummyStorage struct {
+	sync.Mutex
 	wait     time.Duration
 	duration time.Duration
 }
 
 func (s *dummyStorage) Save(ctx context.Context, object object.IDer, path string) error {
+	s.Lock()
+	defer s.Unlock()
 	consoleLog("Start Saving: %v/%v", path, object.ID())
 	s.wait, _ = time.ParseDuration(os.Getenv("DUMMY_DURATION")) // OMIT
 	s.duration += s.wait                                        // HL
