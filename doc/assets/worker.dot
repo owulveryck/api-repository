@@ -10,6 +10,7 @@ digraph G {
     subgraph cluster_channel {
         rankdir=TD;
         label="Buffered Channel (jobQueue)";
+        bgcolor=lightgrey;
         node [shape="Mrecord";label="job|DTO"];
         {
               rank = same;
@@ -44,9 +45,8 @@ digraph G {
     job1 -> handler1;
     handler2 -> job2;
 
-    job9 -> worker1;
+    job9 -> worker1 [ltail=cluster_channel,lhead=cluster_pool];
     job10 -> worker2;
-
 
     worker1 -> saver1;
     worker2 -> saver2;
