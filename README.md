@@ -20,4 +20,4 @@ In the end, I give some pointers to host this "_cloud-native_" application on th
 
 ## Takeway
 
-Unit Tests are fundamental for developing software in quality. Thinking with objectives is a must to think about reliability from the design of the application.
+Unit Tests are fundamental for developing software in quality. Thinking with objectives is a must to think about reliability, and it starts from the design of the application.
