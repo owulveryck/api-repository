@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"flag"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -16,9 +17,10 @@ import (
 var concurrency, numElements int
 
 func main() {
-	concurrency := flag.Int("c", 1, "concurrency")
-	file := flag.String("f", "", "file")
+	concurrency := flag.Int("c", 1, "Concurrency level")
+	file := flag.String("f", "", "source file")
 	url := flag.String("u", "", "url")
+	payload := flag.Int("p", 1, "Number of element in the Payload")
 	flag.Parse()
 	if *file == "" || *url == "" {
 		log.Fatal("Invalid arguments")
@@ -51,10 +53,22 @@ func main() {
 	// END_MAIN OMIT
 	ws := make(chan struct{}, *concurrency) // Number of concurrent calls // HL
 	scanner := bufio.NewScanner(f)
+	i := 0
+	elements := `[`
+	separator := `,`
 	for scanner.Scan() {
-		ws <- struct{}{}
-		wg.Add(1)
-		go injector.SendPostRequest(*url, scanner.Text(), ws, wg, replyChan) // HL
+		i++
+		if i%*payload == 0 || i == numElements-1 {
+			separator = `]`
+			elements = fmt.Sprintf("%v%v%v", elements, scanner.Text(), separator)
+			ws <- struct{}{}
+			fmt.Println(elements)
+			wg.Add(1)
+			go injector.SendPostRequest(*url, scanner.Text(), ws, wg, replyChan) // HL
+			elements = `[`
+		}
+		elements = fmt.Sprintf("%v%v%v", elements, scanner.Text(), separator)
+		separator = `,`
 	}
 	wg.Wait()
 }
