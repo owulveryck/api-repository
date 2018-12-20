@@ -1,6 +1,11 @@
-This is a work in progress for a didactic way to create an API;
+Still a work in progress...
 
 See the `doc` directory for a work in progress of the slides
+to run it:
+```
+# go get github.com/owulveryck/api-repository
+# present
+```
 
 Note: The slides can be viewed online thanks to the godoc project: 
 [here](https://talks.godoc.org/github.com/owulveryck/api-repository/doc/bbl.slide)
@@ -20,4 +25,20 @@ In the end, I give some pointers to host this "_cloud-native_" application on th
 
 ## Takeway
 
-Unit Tests are fundamental for developing software in quality. Thinking with objectives is a must to think about reliability, and it starts from the design of the application.
+Unit Tests are fundamental for developing software in quality. Using objectives is a must to think about reliability, and it starts from the design of the application.
+
+# Résumé
+
+Les API sont devenues un obligation pour les sociétés qui souhaitent s'ouvrir à l'extérieur.
+Ainsi, beaucoup de companies développent une API comme point d'entrée à les plateforme de service. De plus, la donnée est au centre des stratégie. C'est donc naturellement que l'API s'est imposée comme un moyen de récupérer de la donnée dans le but d'y ajouter de la valeur.
+La *dispobilité* de l'API est plus que jamais un concept qui revet un importance particulière si elle n'est pas prise au sérieux. Elle peut être la cause de perte de business importante.
+
+En tant que SRE, faisant parie d'une équipe produit, J'expose dans ce talk ce que j'attend d'une API en terme d'objectis. Le but est de piloter la fiabilité de l'application.
+
+Ensuite j'utilise ces objectifs pour designer et développer un moteur d'API (en Go) capable de prendre en charge un bulk de produit et de le stocker dans un DAO.
+
+Enfin, je donne quelques pointers pour héberger cette application "cloud-native" de manière efficace et peu honéreuse sur le cloud public GCP.
+
+## Takeway
+
+Les tests unitaires sont fondamentaux pour developper un logiciel de qualité. Utiliser des objectifs" est un must pour penser à la **fiabilité** de l'application et ceci démarre dès la phase de conception.
