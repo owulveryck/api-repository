@@ -30,12 +30,14 @@ Unit Tests are fundamental for developing software in quality. Using objectives 
 # Résumé
 
 Les API sont devenues un obligation pour les sociétés qui souhaitent s'ouvrir à l'extérieur.
-Ainsi, beaucoup de companies développent une API comme point d'entrée à les plateforme de service. De plus, la donnée est au centre des stratégie. C'est donc naturellement que l'API s'est imposée comme un moyen de récupérer de la donnée dans le but d'y ajouter de la valeur.
-La *dispobilité* de l'API est plus que jamais un concept qui revet un importance particulière si elle n'est pas prise au sérieux. Elle peut être la cause de perte de business importante.
 
-En tant que SRE, faisant parie d'une équipe produit, J'expose dans ce talk ce que j'attend d'une API en terme d'objectis. Le but est de piloter la fiabilité de l'application.
+Ainsi, c'est pour beaucoup une porte d'entrée vers les plateformes de services. De plus, la donnée est au centre des stratégie. C'est donc naturellement que l'API s'est imposée comme un moyen de récupérer de la donnée dans le but d'y ajouter de la valeur.
 
-Ensuite j'utilise ces objectifs pour designer et développer un moteur d'API (en Go) capable de prendre en charge un bulk de produit et de le stocker dans un DAO.
+La *disponibilité* de l'API est donc, plus que jamais, un concept qui revet un importance particulière si elle n'est pas prise au sérieux. Elle peut être la cause de perte de business importante.
+
+En tant que SRE dans une équipe produit, j'expose dans ce talk ce que j'attend d'une API en terme d'objectis. Le but est de piloter la fiabilité de l'application.
+
+Ensuite j'utilise ces objectifs pour designer et développer un moteur d'API (en Go) capable de prendre en charge un bulk de produits et de le stocker dans un DAO.
 
 Enfin, je donne quelques pointers pour héberger cette application "cloud-native" de manière efficace et peu honéreuse sur le cloud public GCP.
 
