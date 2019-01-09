@@ -13,9 +13,11 @@ import (
 	"github.com/owulveryck/api-repository/handler"
 	"github.com/owulveryck/api-repository/session"
 
-	//_ "github.com/owulveryck/api-repository/dao/gcs"
-	_ "github.com/owulveryck/api-repository/dao/fs"
-	_ "github.com/owulveryck/api-repository/session/memory"
+	_ "github.com/owulveryck/api-repository/dao/gcs"
+	_ "github.com/owulveryck/api-repository/session/gds"
+
+	//_ "github.com/owulveryck/api-repository/dao/fs"
+	//_ "github.com/owulveryck/api-repository/session/memory"
 	"github.com/owulveryck/api-repository/worker"
 )
 

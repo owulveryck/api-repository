@@ -1,17 +1,31 @@
-package main
+package gcd
 
+// START_IMPORT OMIT
 import (
-	"context"
-	"encoding/json"
-	"log"
-	"net/http"
+	"context" // OMIT
+	// OMIT
+	"errors"
+	"log" // OMIT
 
-	"cloud.google.com/go/datastore"
-	"github.com/google/uuid"
-	"github.com/julienschmidt/httprouter"
-	"github.com/kelseyhightower/envconfig"
-	"github.com/owulveryck/api-repository/session"
+	// OMIT
+	"cloud.google.com/go/datastore" // HL
+	"github.com/google/uuid"        // OMIT
+
+	// OMIT
+	"github.com/kelseyhightower/envconfig"         // OMIT
+	"github.com/owulveryck/api-repository/session" // OMIT
+	// ...
 )
+
+// END_IMPORT OMIT
+
+func init() {
+	sessionHandler, err := newSessionHandler()
+	if err != nil {
+		panic(err)
+	}
+	session.Register(sessionHandler)
+}
 
 type configuration struct {
 	ProjectID  string `envconfig:"GCOUD_PROJECT" required:"true"`
@@ -20,9 +34,12 @@ type configuration struct {
 
 var config configuration
 
+// START_DEF OMIT
 type sessionHandler struct {
 	client *datastore.Client
 }
+
+// END_DEF OMIT
 
 func newSessionHandler() (*sessionHandler, error) {
 	err := envconfig.Process("", &config)
@@ -39,17 +56,13 @@ func newSessionHandler() (*sessionHandler, error) {
 	}, nil
 }
 
-func (s *sessionHandler) HTTPGet(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	id := ps.ByName("id")
-	if id == "" {
-		http.Error(w, "Missing argument", http.StatusBadRequest)
-		return
-	}
+// START_GET OMIT
+func (s *sessionHandler) Get(ctx context.Context, id uuid.UUID) (*session.Transaction, error) {
+	// END_GET OMIT
 
-	ctx := r.Context()
 	var t session.Transaction
 	_, err := s.client.RunInTransaction(ctx, func(tx *datastore.Transaction) error {
-		key := datastore.NameKey("Status", id, nil)
+		key := datastore.NameKey("Status", id.String(), nil)
 		err := tx.Get(key, &t)
 		if err != nil {
 			return err
@@ -68,22 +81,16 @@ func (s *sessionHandler) HTTPGet(w http.ResponseWriter, r *http.Request, ps http
 	}, datastore.ReadOnly)
 	if err != nil {
 		if err == datastore.ErrNoSuchEntity {
-			http.Error(w, "Transaction not found ", http.StatusNotFound)
-			return
+			return nil, errors.New("Transaction not found")
 		}
-		http.Error(w, "Cannot fetch transaction "+err.Error(), http.StatusInternalServerError)
-		return
+		return nil, err
 	}
-	w.WriteHeader(http.StatusMultiStatus)
-	enc := json.NewEncoder(w)
-	err = enc.Encode(t)
-	if err != nil {
-		http.Error(w, "Cannot output transaction "+err.Error(), http.StatusInternalServerError)
-		return
-	}
+	return &t, nil
 }
 
+// START_CREATE OMIT
 func (s *sessionHandler) Create(ctx context.Context, id uuid.UUID, t *session.Transaction) error {
+	// END_CREATE OMIT
 	t.ElementsID = make([]string, len(t.Elements))
 	for i, e := range t.Elements {
 		t.ElementsID[i] = e.ID
@@ -101,7 +108,10 @@ func (s *sessionHandler) Create(ctx context.Context, id uuid.UUID, t *session.Tr
 	log.Println(err)
 	return err
 }
+
+// START_UPSERT OMIT
 func (s *sessionHandler) Upsert(ctx context.Context, id uuid.UUID, element session.Element) error {
+	// END_UPSERT OMIT
 	_, err := s.client.RunInTransaction(ctx, func(tx *datastore.Transaction) error {
 		key := datastore.NameKey("Status", id.String(), nil)
 		k := datastore.NameKey("Element", element.ID, key)

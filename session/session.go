@@ -22,6 +22,7 @@ type Element struct {
 }
 
 // Transaction ...
+// START_TRANSACTION OMIT
 type Transaction struct {
 	ID         string    `json:"transaction"`
 	ElementsID []string  `json:"-"`
@@ -29,12 +30,17 @@ type Transaction struct {
 	LastUpdate time.Time `datastore:"-"`
 }
 
+// END_TRANSACTION OMIT
+
 // Saver is a session saver
+// START_SESSION OMIT
 type Saver interface {
-	Get(context.Context, uuid.UUID) (*Transaction, error)
+	Get(context.Context, uuid.UUID) (*Transaction, error) // HLuuid
 	Create(context.Context, uuid.UUID, *Transaction) error
 	Upsert(context.Context, uuid.UUID, Element) error
 }
+
+// END_SESSION OMIT
 
 // Create a transaction with the session is
 func Create(ctx context.Context, u uuid.UUID, t *Transaction) error {

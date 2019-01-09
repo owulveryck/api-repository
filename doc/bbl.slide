@@ -203,10 +203,45 @@ A Handler responds to an HTTP request.
 
 .play -numbers -edit test2/bundle.go /START_TEST_SERVER OMIT/,/END_TEST_SERVER OMIT/ 
 
-* Handling the results (code http 207)
+* Handling the results (code http 207 / Multistatus)
 
-How do we know that a product has been insterted in the DAO?
+How do we know that a product has been inserted in the DAO?
 
+ # curl -X POST "http://localhost:8080/products" -d '[ { "id": "12345", "name": "toto" } ]'
+ {"id":"e67a91e6-9ba7-42b5-b958-a4aaa38fa8d8"}
+
+ 
+ # curl http://localhost:8080/jobs/e67a91e6-9ba7-42b5-b958-a4aaa38fa8d8
+ {
+  "transaction": "e67a91e6-9ba7-42b5-b958-a4aaa38fa8d8",
+  "elements": [
+    {
+      "ID": "12898",
+      "Status": 202,
+      "Err": ""
+    }
+  ],
+  "LastUpdate": "0001-01-01T00:00:00Z"
+ }
+
+* What is a transaction
+
+Every call is a transaction, and a transaction holds the status of all the elements to be processed
+
+.code ../session/session.go /START_TRANSACTION OMIT/,/END_TRANSACTION OMIT/
+
+* Handling transaction in a database
+
+The transaction is identified by a _uuid_
+
+.code ../session/session.go /START_SESSION OMIT/,/END_SESSION OMIT/ 
+
+* Memory based transaction DB
+
+.code ../session/memory/session.go /START_DEF OMIT/,/END_DEF OMIT/
+.code ../session/memory/session.go /START_GET OMIT/,/END_GET OMIT/
+.code ../session/memory/session.go /START_CREATE OMIT/,/END_CREATE OMIT/
+.code ../session/memory/session.go /START_UPSERT OMIT/,/END_UPSERT OMIT/
 
 * Running at scale (in the cloud)
 
@@ -218,6 +253,11 @@ How do we know that a product has been insterted in the DAO?
 
 * Sessions Google datastore
 
+.code ../session/gcd/google_datastore.go /START_IMPORT OMIT/,/END_IMPORT OMIT/
+.code ../session/gcd/google_datastore.go /START_DEF OMIT/,/END_DEF OMIT/
+.code ../session/gcd/google_datastore.go /START_GET OMIT/,/END_GET OMIT/
+.code ../session/gcd/google_datastore.go /START_CREATE OMIT/,/END_CREATE OMIT/
+.code ../session/gcd/google_datastore.go /START_UPSERT OMIT/,/END_UPSERT OMIT/
 
 * Deployment on a PaaS (Google App Engine)
 
