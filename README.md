@@ -39,7 +39,7 @@ En tant que SRE dans une équipe produit, j'expose dans ce talk ce que j'attend 
 
 Ensuite j'utilise ces objectifs pour designer et développer un moteur d'API (en Go) capable de prendre en charge un bulk de produits et de le stocker dans un DAO.
 
-Enfin, je donne quelques pointers pour héberger cette application "cloud-native" de manière efficace et peu honéreuse sur le cloud public GCP.
+Enfin, je donne quelques pointers pour héberger cette application "cloud-native" de manière efficace et peu onéreuse sur le cloud public GCP.
 
 ## Takeway
 
