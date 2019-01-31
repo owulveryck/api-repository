@@ -5,8 +5,7 @@ import (
 	"context" // OMIT
 	// OMIT
 	"errors"
-	"log" // OMIT
-
+	// OMIT
 	// OMIT
 	"cloud.google.com/go/datastore" // HL
 	"github.com/google/uuid"        // OMIT
@@ -105,7 +104,6 @@ func (s *sessionHandler) Create(ctx context.Context, id uuid.UUID, t *session.Tr
 		keys[i] = datastore.NameKey("Element", t, key)
 	}
 	_, err = s.client.PutMulti(ctx, keys, t.Elements)
-	log.Println(err)
 	return err
 }
 
