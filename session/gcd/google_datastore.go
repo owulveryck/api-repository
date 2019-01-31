@@ -28,8 +28,8 @@ func init() {
 }
 
 type configuration struct {
-	ProjectID  string `envconfig:"GCOUD_PROJECT" required:"true"`
-	BucketName string `envconfig:"BUCKET" required:"true"`
+	ProjectID  string `envconfig:"GCP_PROJECT" required:"true"`
+	BucketName string `envconfig:"GCP_BUCKET" required:"true"`
 }
 
 var config configuration

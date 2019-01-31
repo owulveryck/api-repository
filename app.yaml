@@ -2,6 +2,7 @@ runtime: go111
 
 env_variables:
   GCP_BUCKET: "api-repository-owulveryck"
+  GCP_PROJECT: "repository-api"
 
 handlers:
 - url: /.*

@@ -23,7 +23,7 @@ Then I use those objectives to design and develop an underlying API that can han
 In the end, I give some pointers to host this "_cloud-native_" application on the cloud in a cost-effective way (using GCP app engine).
 
 
-## Takeway
+## Takeaway
 
 Unit Tests are fundamental for developing software in quality. Using objectives is a must to think about reliability, and it starts from the design of the application.
 
@@ -41,6 +41,6 @@ Ensuite j'utilise ces objectifs pour designer et développer un moteur d'API (en
 
 Enfin, je donne quelques pointers pour héberger cette application "cloud-native" de manière efficace et peu onéreuse sur le cloud public GCP.
 
-## Takeway
+## Takeaway
 
 Les tests unitaires sont fondamentaux pour developper un logiciel de qualité. Utiliser des objectifs" est un must pour penser à la **fiabilité** de l'application et ceci démarre dès la phase de conception.
