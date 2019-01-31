@@ -15,8 +15,8 @@ import (
 //END_IMPORT OMIT
 
 type configuration struct {
-	ProjectID string `envconfig:"PROJECT" required:"true"`
-	Bucket    string `envconfig:"BUCKET" required:"true"`
+	ProjectID string `envconfig:"GCP_PROJECT" required:"true"`
+	Bucket    string `envconfig:"GCP_BUCKET" required:"true"`
 }
 
 var config configuration
